@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.alipay.sofa</groupId>
+        <artifactId>sofaboot-dependencies</artifactId>
+        <version>2.4.7</version>
+    </parent>
+
+    <artifactId>tracer-demo-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>1.7</java.version>
+        <sofa.tracer.version>2.2.0-SNAPSHOT</sofa.tracer.version>
+        <httpclient.version>4.5.3</httpclient.version>
+        <zipkin.version>2.11.3</zipkin.version>
+        <zipkin.reporter.version>2.7.7</zipkin.reporter.version>
+    </properties>
+
+    <modules>
+        <module>service-facade</module>
+        <module>httpclient-demo</module>
+        <module>springmvc-demo</module>
+        <module>sofarpc-demo</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>httpclient-demo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>springmvc-demo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofarpc-demo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>service-facade</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- Non SOFABoot or Non Spring Boot dependency -->
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>tracer-all</artifactId>
+                <version>${sofa.tracer.version}</version>
+            </dependency>
+            <!-- SOFABoot or Spring Boot dependency -->
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>tracer-sofa-boot-starter</artifactId>
+                <version>${sofa.tracer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-tracer-datasource-plugin</artifactId>
+                <version>${sofa.tracer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-tracer-httpclient-plugin</artifactId>
+                <version>${sofa.tracer.version}</version>
+            </dependency>
+            <!-- HttpClient Dependency -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <!-- Zipkin Dependency -->
+            <dependency>
+                <groupId>io.zipkin.zipkin2</groupId>
+                <artifactId>zipkin</artifactId>
+                <version>${zipkin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.reporter2</groupId>
+                <artifactId>zipkin-reporter</artifactId>
+                <version>${zipkin.reporter.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+                <version>3.3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>central</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <!-- SOFATracer 2.2.0-SNAPSHOT RELEASE In snapshots Repo now -->
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>central</id>
+                    <name>Maven Repository Switchboard</name>
+                    <layout>default</layout>
+                    <url>http://repo1.maven.org/maven2</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>http://repo1.maven.org/maven2</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+</project>
